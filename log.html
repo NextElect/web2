@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活動記録 - 長野大学ローターアクトクラブ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ★ ヘッダー部分 ★ -->
+    <header class="site-header">
+        <div class="header-logo">長野大学<br>ローターアクトクラブ</div>
+
+        <nav class="header-nav">
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="about.html">概要</a></li>
+                <li><a href="activity.html">活動内容</a></li>
+                <li class="dropdown">
+                    <a href="log.html" class="dropbtn">活動記録 ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="log.html">これまでの活動</a></li>
+                        <li><a href="diary.html">幹事日記</a></li>
+                    </ul>
+                </li>
+                <li><a href="schedule.html">スケジュール</a></li>
+                <li><a href="news.html">お知らせ</a></li>
+                <li><a href="contact.html">お問い合わせ</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right">
+            <div class="header-search">
+                <input type="text" placeholder="サイト内検索...">
+                <button type="button">検索</button>
+        </div>
+    </header>
+
+    <!-- ★ 活動記録のメインコンテンツ ★ -->
+    <div class="page-body">
+        <div class="page-header">
+            <h1 class="page-title">Activity Log</h1>
+            <p class="page-subtitle">これまでの活動記録</p>
+        </div>
+
+        <!-- スプレッドシートのデータがここに自動でカードになって入ります -->
+        <div class="activity-wrapper" id="activity-list">
+            <div class="news-loading">現在、活動記録を読み込んでいます...⏳</div>
+        </div>
+
+        <div class="back-home-container">
+            <a href="index.html" class="back-home-btn">
+                <span>🏠</span> トップページに戻る
+            </a>
+        </div>
+
+    </div>
+
+    <!-- ★ フッター（ページの一番下） ★ -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-info">
+                <div class="footer-logo">長野大学ローターアクトクラブ</div>
+                <p class="footer-address">〒386-1298<br>長野県上田市下之郷658-1 長野大学内</p>
+            
+                <div class="footer-contact">
+                    <a href="tel:0268XXXXXX" class="contact-link">
+                        <span class="contact-icon">📞</span> 0268-XX-XXXX
+                    </a>
+                    <a href="mailto:example@nagano-u.ac.jp" class="contact-link">
+                        <span class="contact-icon">✉️</span> naganouni.rac@gmail.com
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <a href="https://www.instagram.com/nagano_univ.rac?igsh=MW1xanJqemwyc2l2cQ%3D%3D&utm_source=qr" target="_blank" class="instagram-link">
+                    <span class="inst-icon">📸</span> Instagram
+                </a>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <p class="copyright">&copy; 2026 Nagano University Rotary Act Club</p>
+        </div>
+    </footer>
+
+    <!-- ★ スプレッドシートから一覧を自動生成するプログラム ★ -->
+    <script>
+        const ACTIVITY_SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
+        const url = `https://docs.google.com/spreadsheets/d/${ACTIVITY_SHEET_ID}/gviz/tq?tqx=out:json`;
+
+        const getVal = (row, idx) => (row.length > idx && row[idx]) ? (row[idx].f || row[idx].v) : '';
+
+        fetch(url)
+            .then(response => response.text())
+            .then(text => {
+                const jsonString = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/)[1];
+                const rows = JSON.parse(jsonString).table.rows;
+                
+                rows.reverse();
+
+                const activityList = document.getElementById('activity-list');
+                activityList.innerHTML = ''; 
+
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows[i].c;
+                    if (!row || !row[0]) continue; 
+
+                    const id = getVal(row, 0);
+                    const date = getVal(row, 1);
+                    const category = getVal(row, 2) || '活動報告';
+                    if (category !== '活動報告') continue;
+                    const title = getVal(row, 3)
+                    let imgUrl = getVal(row, 5); // F列: 画像
+                    let bodyText = getVal(row, 6); // G列: 本文
+                    if (!bodyText) continue;
+
+                    // ★重要：本文が空っぽの記事（ただのお知らせ）は活動記録に出さない！
+                    if (!bodyText) continue;
+
+                    if (!imgUrl) imgUrl = 'https://via.placeholder.com/400x300/e9ecef/868e96?text=No+Image';
+                    let snippet = bodyText.length > 60 ? bodyText.substring(0, 60) + '...' : bodyText;
+
+                    const articleHTML = `
+                        <article class="activity-card">
+                            <div class="activity-img">
+                                <img src="${imgUrl}" alt="活動写真">
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-meta">
+                                    <span class="activity-date">${date}</span>
+                                    <span class="activity-tag">${category}</span>
+                                </div>
+                                <h2 class="activity-heading">${title}</h2>
+                                <p class="activity-text" style="font-size:14px; color:#666;">${snippet}</p>
+                                <div style="margin-top: 15px; text-align: right;">
+                                    <a href="article.html?id=${id}" class="news-more-btn" style="padding: 5px 15px; font-size: 13px;">続きを読む &rarr;</a>
+                                </div>
+                            </div>
+                        </article>
+                    `;
+                    activityList.innerHTML += articleHTML;
+                }
+            }).catch(e => console.error(e));
+    </script>
+
+</body>
+</html>

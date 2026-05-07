@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スケジュール - 長野大学ローターアクトクラブ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ★ ヘッダー部分 ★ -->
+     <header class="site-header">
+        <div class="header-logo">
+            長野大学<br>ローターアクトクラブ
+        </div>
+        
+        <!-- ナビゲーション（メニュー） -->
+        <nav class="header-nav">
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="about.html">概要</a></li>
+                <li><a href="activity.html">活動内容</a></li>
+                <li class="dropdown">
+                    <a href="log.html" class="dropbtn">活動記録 ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="log.html">これまでの活動</a></li>
+                        <li><a href="diary.html">幹事日記</a></li>
+                    </ul>
+                </li>
+                <li><a href="schedule.html">スケジュール</a></li>
+                <li><a href="news.html">お知らせ</a></li>
+                <li><a href="contact.html">お問い合わせ</a></li>
+            </ul>
+        </nav>
+
+        <!-- 検索窓と電話番号 -->
+        <div class="header-right">
+            <div class="header-search">
+                <input type="text" placeholder="サイト内検索...">
+                <button type="button">検索</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ★ スケジュールページのメインコンテンツ ★ -->
+    <div class="page-body">
+        
+        <div class="page-header">
+            <h1 class="page-title">Schedule</h1>
+            <p class="page-subtitle">活動予定と年間スケジュール</p>
+        </div>
+
+        <div class="schedule-container">
+            
+            <!-- ==========================================
+                 セクション1：Googleカレンダー埋め込み
+                 ========================================== -->
+            <section class="schedule-section">
+                <h2 class="category-title"><span>Calendar</span>📅 直近の活動予定</h2>
+                <p class="category-desc">定例会やボランティア、イベントの詳しい日時はこちらからご確認ください。</p>
+
+                <!-- ★ カレンダーの色分け説明（凡例） ★ -->
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: #e9c46a;"></span>
+                        <span class="legend-text">定例会</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: #b70c6a;"></span>
+                        <span class="legend-text">地域奉仕活動</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: #7e310b;"></span>
+                        <span class="legend-text">国際奉仕活動</span>
+                    </div>
+                </div>
+
+                <!-- カレンダーをスマホ対応にするための魔法の箱 -->
+                <div class="g-calendar-wrapper">
+                    <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FTokyo&showPrint=0&showTitle=0&src=MjgzMDc1N2MwOTgwNTRmMTQ2NjYyOGNlZDkyNWMxYWFjMjUxMzFlN2FmYjVmZmZjMGU1NTZiM2ExNjhhOWM0M0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NDQ3NDdkMjQ2Y2Y1ODMzZDhlZmE5ZDA4ZDU3ZWZiNGEyNWRiMDY0ZWY2YTc2MzAwZDFkMmZjZDQ2ZmU3YjBkNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NGQwMjE4YTM1YjBhOWQ1YzVkY2JiMWI3N2FmOGNiZGNjMzJjZWI5MjZhMzdhNTU5OGQzNDU5NDU4YmRiOTcyNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23ad1457&color=%23795548&color=%23f09300" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 セクション2：年間行事予定
+                 ========================================== -->
+            <section class="schedule-section">
+                <h2 class="category-title"><span>Yearly Plan</span>🌸 年間の主な流れ</h2>
+                <p class="category-desc">1年を通した大まかな活動スケジュールです。（※予定は変更になる場合があります）</p>
+
+                <div class="yearly-grid">
+                    
+                    <!-- 4月 -->
+                    <div class="month-card season-spring">
+                        <div class="month-badge">4月</div>
+                        <h4>新入生歓迎会・春の定例会</h4>
+                        <p>新メンバーを迎えての親睦会や、前期の活動計画・プロジェクトの打ち合わせを行います。</p>
+                    </div>
+
+                    <!-- 5月 -->
+                    <div class="month-card season-spring">
+                        <div class="month-badge">5月</div>
+                        <h4>地区ローターアクト研修会</h4>
+                        <p>県内の他大学や社会人のアクターと交流し、クラブ運営や奉仕の理念について学びます。</p>
+                    </div>
+
+                    <!-- 8月 -->
+                    <div class="month-card season-summer">
+                        <div class="month-badge">8月</div>
+                        <h4>カンボジア海外ボランティア研修</h4>
+                        <p>現地の孤児院訪問や大学との交流を通じて、国際的な視野と多文化理解を実践的に深めます。</p>
+                    </div>
+
+                    <!-- 10月 -->
+                    <div class="month-card season-autumn">
+                        <div class="month-badge">10月</div>
+                        <h4>地域イベント・大学祭への参加</h4>
+                        <p>地域のお祭りや大学祭に出店・参加し、クラブのPR活動や地域の方々との交流を楽しみます。</p>
+                    </div>
+
+                    <!-- 12月 -->
+                    <div class="month-card season-winter">
+                        <div class="month-badge">12月</div>
+                        <h4>クリスマス・チャリティー</h4>
+                        <p>年末の親睦会を兼ねて、募金活動や地域の子どもたちに向けたボランティアを企画します。</p>
+                    </div>
+
+                    <!-- 3月 -->
+                    <div class="month-card season-winter">
+                        <div class="month-badge">3月</div>
+                        <h4>卒業生を送る会・次年度計画</h4>
+                        <p>お世話になった先輩方を送り出し、4月からの新しい1年に向けた引き継ぎと準備を行います。</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <div class="back-home-container">
+                <a href="index.html" class="back-home-btn">
+                    <span>🏠</span> トップページに戻る
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ★ フッター（ページの一番下） ★ -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-info">
+                <div class="footer-logo">長野大学ローターアクトクラブ</div>
+                <p class="footer-address">〒386-1298<br>長野県上田市下之郷658-1 長野大学内</p>
+            
+                <div class="footer-contact">
+                    <a href="tel:0268XXXXXX" class="contact-link">
+                        <span class="contact-icon">📞</span> 0268-XX-XXXX
+                    </a>
+                    <a href="mailto:example@nagano-u.ac.jp" class="contact-link">
+                        <span class="contact-icon">✉️</span> naganouni.rac@gmail.com
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <a href="https://www.instagram.com/nagano_univ.rac?igsh=MW1xanJqemwyc2l2cQ%3D%3D&utm_source=qr" target="_blank" class="instagram-link">
+                    <span class="inst-icon">📸</span> Instagram
+                </a>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <p class="copyright">&copy; 2026 Nagano University Rotary Act Club</p>
+        </div>
+    </footer>
+
+</body>
+</html>

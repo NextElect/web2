@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記事詳細 | 長野大学ローターアクトクラブ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-logo">長野大学<br>ローターアクトクラブ</div>
+        <nav class="header-nav">
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="about.html">概要</a></li>
+                <li><a href="activity.html">活動内容</a></li>
+                <li class="dropdown">
+                    <a href="log.html" class="dropbtn">活動記録 ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="log.html">これまでの活動</a></li>
+                        <li><a href="diary.html">幹事日記</a></li>
+                    </ul>
+                </li>
+                <li><a href="schedule.html">スケジュール</a></li>
+                <li><a href="news.html">お知らせ</a></li>
+                <li><a href="contact.html">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-body">
+        <div class="single-article-container" id="article-content">
+            <div class="news-loading">記事を読み込んでいます...⏳</div>
+        </div>
+
+        <div class="back-home-container">
+            <a href="javascript:history.back()" class="back-home-btn"><span>🔙</span> 一覧に戻る</a>
+        </div>
+    </div>
+
+    <script>
+        const SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        const targetId = new URLSearchParams(window.location.search).get('id');
+        const getVal = (row, idx) => (row.length > idx && row[idx]) ? (row[idx].f || row[idx].v) : '';
+
+        fetch(url).then(res => res.text()).then(text => {
+            const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/)[1]);
+            const row = json.table.rows.find(r => getVal(r.c, 0) === targetId);
+
+            if (row) {
+                const d = row.c;
+                const date = getVal(d, 1), cat = getVal(d, 2), title = getVal(d, 3), body = getVal(d, 6), pdf = getVal(d, 7);
+                
+                let pdfHTML = '';
+                if (pdf && pdf.includes('drive.google.com')) {
+                    // どんなGoogleドライブURLもプレビュー用に変換
+                    const embedUrl = pdf.replace('/view', '/preview').split('?')[0];
+                    pdfHTML = `<div class="pdf-container"><iframe src="${embedUrl}"></iframe></div>`;
+                }
+
+                document.getElementById('article-content').innerHTML = `
+                    <div class="news-meta" style="margin-bottom:20px;">
+                        <span class="news-date" style="font-size:18px;">${date}</span>
+                        <span class="news-category" style="background:var(--accent-yellow); color:#333;">${cat}</span>
+                    </div>
+                    <h1 class="article-title">${title}</h1>
+                    <div class="article-body" style="font-size:17px; line-height:1.8; margin-bottom:40px;">
+                        ${body.replace(/\n/g, '<br>')}
+                    </div>
+                    ${pdfHTML}
+                `;
+            } else {
+                document.getElementById('article-content').innerHTML = '記事が見つかりません。';
+            }
+        });
+    </script>
+</body>
+</html>
