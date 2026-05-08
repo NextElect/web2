@@ -33,10 +33,10 @@
         </nav>
 
         <div class="header-right">
-            <div class="header-search">
-                <input type="text" placeholder="サイト内検索...">
-                <button type="button">検索</button>
-            </div>
+            <form action="search.html" method="get" class="header-search" style="margin: 0;">
+                <input type="text" name="q" placeholder="サイト内検索..." required>
+                <button type="submit">検索</button>
+            </form>
         </div>
     </header>
 
@@ -77,9 +77,6 @@
                 <p class="footer-address">〒386-1298<br>長野県上田市下之郷658-1 長野大学内</p>
             
                 <div class="footer-contact">
-                    <a href="tel:0268XXXXXX" class="contact-link">
-                        <span class="contact-icon">📞</span> 0268-XX-XXXX
-                    </a>
                     <a href="mailto:example@nagano-u.ac.jp" class="contact-link">
                         <span class="contact-icon">✉️</span> naganouni.rac@gmail.com
                     </a>

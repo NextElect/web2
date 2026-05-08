@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お知らせ - 長野大学ローターアクトクラブ</title>
+    <title>お知らせ | 長野大学ローターアクトクラブ</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ★ ヘッダー部分 ★ -->
     <header class="site-header">
         <div class="header-logo">
             長野大学<br>ローターアクトクラブ
         </div>
         
-        <!-- ナビゲーション（メニュー） -->
         <nav class="header-nav">
             <ul>
                 <li><a href="index.html">ホーム</a></li>
@@ -33,112 +31,78 @@
             </ul>
         </nav>
 
-        <!-- 検索窓と電話番号 -->
         <div class="header-right">
-            <div class="header-search">
-                <input type="text" placeholder="サイト内検索...">
-                <button type="button">検索</button>
-            </div>
+            <form action="search.html" method="get" class="header-search" style="margin: 0;">
+                <input type="text" name="q" placeholder="サイト内検索..." required>
+                <button type="submit">検索</button>
+            </form>
         </div>
     </header>
 
-    <!-- ★ お知らせページのメインコンテンツ ★ -->
     <div class="page-body">
-        
         <div class="page-header">
             <h1 class="page-title">News</h1>
-            <p class="page-subtitle">お知らせ・最新情報</p>
+            <p class="page-subtitle">お知らせ</p>
         </div>
 
         <div class="news-container">
-            
-            <!-- スプレッドシートのデータがここに自動で入ります -->
-            <ul id="news-list" class="news-list">
-                <li class="news-loading">現在、お知らせを読み込んでいます...⏳</li>
+            <ul class="news-list" id="news-list">
+                <li class="news-loading">お知らせを読み込み中...⏳</li>
             </ul>
+        </div>
 
-            <div class="back-home-container">
-                <a href="index.html" class="back-home-btn">
-                    <span>🏠</span> トップページに戻る
-                </a>
-            </div>
-
+        <div class="back-home-container">
+            <a href="index.html" class="back-home-btn"><span>🏠</span> ホームに戻る</a>
         </div>
     </div>
 
-    <!-- ★ スプレッドシートを読み込む魔法のプログラム ★ -->
     <script>
         const SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-
-        // 空欄でもエラーにならない安全なデータ取得関数
         const getVal = (row, idx) => (row.length > idx && row[idx]) ? (row[idx].f || row[idx].v) : '';
 
-        fetch(url)
-            .then(response => response.text())
-            .then(text => {
-                const jsonString = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/)[1];
-                const rows = JSON.parse(jsonString).table.rows;
+        fetch(url).then(res => res.text()).then(text => {
+            const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/)[1]);
+            const rows = json.table.rows;
+            rows.reverse();
+
+            const newsList = document.getElementById('news-list');
+            newsList.innerHTML = '';
+
+            rows.forEach(r => {
+                const row = r.c;
+                if (!row || !row[0]) return;
+
+                const id = getVal(row, 0), date = getVal(row, 1), category = getVal(row, 2) || 'お知らせ', title = getVal(row, 3);
                 
-                rows.reverse();
+                // カテゴリーの色分け
+                let catClass = 'cat-event';
+                if (category === '活動報告') catClass = 'cat-report';
+                if (category === '重要') catClass = 'cat-important';
+                if (category === '幹事日記') catClass = 'cat-event';
 
-                const newsList = document.getElementById('news-list');
-                newsList.innerHTML = ''; 
-
-                for (let i = 0; i < rows.length; i++) {
-                    const row = rows[i].c;
-                    if (!row || !row[0]) continue; 
-
-                    const id = getVal(row, 0);
-                    const date = getVal(row, 1);
-                    const category = getVal(row, 2) || 'お知らせ';
-                    const title = getVal(row, 3);
-                    const extLink = getVal(row, 4); // E列: 外部リンク
-                    const bodyText = getVal(row, 6); // G列: 本文
-
-                    let catClass = 'cat-default';
-                    if (category === 'イベント') catClass = 'cat-event';
-                    if (category === '活動報告') catClass = 'cat-report';
-                    if (category === '重要') catClass = 'cat-important';
-
-                    // 本文（G列）があれば、最初の60文字を切り取ってスニペットを作る
-                    let snippetHTML = '';
-                    if (bodyText) {
-                        let snippet = bodyText.length > 60 ? bodyText.substring(0, 60) + '...' : bodyText;
-                        // タイトルとの隙間を少し狭め（margin-top: 5px）に調整しました
-                        snippetHTML = `<div style="font-size: 13px; color: #666666; margin-top: 5px; line-height: 1.6;">${snippet}</div>`;
-                    }
-
-                    let listItemHTML = `
-                        <div class="news-meta">
-                            <span class="news-date">${date}</span>
-                            <span class="news-category ${catClass}">${category}</span>
-                        </div>
-                        <div style="flex-grow: 1;">
-                            <div class="news-title">${title}</div>
-                            ${snippetHTML}
-                        </div>
-                    `;
-
-                    // ★魔法のリンク判定：外部リンクがあるか、本文があるかによって動きを変える
-                    if (extLink) {
-                        listItemHTML = `<a href="${extLink}" target="_blank" class="news-link">${listItemHTML}</a>`;
-                    } else if (bodyText) {
-                        listItemHTML = `<a href="article.html?id=${id}" class="news-link">${listItemHTML}</a>`;
-                    } else {
-                        listItemHTML = `<div class="news-link nolink">${listItemHTML}</div>`;
-                    }
-
-                    const li = document.createElement('li');
-                    li.className = 'news-item';
-                    li.innerHTML = listItemHTML;
-                    newsList.appendChild(li);
+                // 🌟 カテゴリーバッジのリンク設定
+                let categoryHTML = `<span class="news-category ${catClass}">${category}</span>`;
+                if (category === '幹事日記') {
+                    categoryHTML = `<a href="diary.html" class="news-category ${catClass}" style="text-decoration: none; position: relative; z-index: 10;">${category}</a>`;
                 }
-                if (newsList.innerHTML === '') newsList.innerHTML = '<li class="news-loading">お知らせはありません。</li>';
-            }).catch(e => console.error(e));
+
+                newsList.innerHTML += `
+                    <li class="news-item">
+                        <div class="news-link" style="display: flex; align-items: center; position: relative; text-decoration: none; color: inherit;">
+                            <div class="news-meta" style="flex-shrink: 0; position: relative; z-index: 11;">
+                                <span class="news-date">${date}</span>
+                                ${categoryHTML}
+                            </div>
+                            <a href="article.html?id=${id}" style="flex-grow: 1; margin-left: 20px; text-decoration: none; color: inherit; display: block; z-index: 5;">
+                                <div class="news-title" style="font-weight: 800;">${title}</div>
+                            </a>
+                        </div>
+                    </li>`;
+            });
+        });
     </script>
 
-    <!-- ★ フッター（ページの一番下） ★ -->
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-info">
@@ -146,9 +110,6 @@
                 <p class="footer-address">〒386-1298<br>長野県上田市下之郷658-1 長野大学内</p>
             
                 <div class="footer-contact">
-                    <a href="tel:0268XXXXXX" class="contact-link">
-                        <span class="contact-icon">📞</span> 0268-XX-XXXX
-                    </a>
                     <a href="mailto:example@nagano-u.ac.jp" class="contact-link">
                         <span class="contact-icon">✉️</span> naganouni.rac@gmail.com
                     </a>

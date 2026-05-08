@@ -35,10 +35,11 @@
 
         <!-- 検索窓と電話番号 -->
         <div class="header-right">
-            <div class="header-search">
-                <input type="text" placeholder="サイト内検索...">
-                <button type="button">検索</button>
-            </div>
+            <form action="search.html" method="get" class="header-search" style="margin: 0;">
+                <input type="text" name="q" placeholder="サイト内検索..." required>
+                <button type="submit">検索</button>
+            </form>
+        </div>
     </header>
 
     <!-- ★ 概要ページのメインコンテンツ ★ -->
@@ -103,10 +104,6 @@
                             <td>2025年5月19日</td>
                         </tr>
                         <tr>
-                            <th>提　唱</th>
-                            <td>上田六文銭ロータリークラブ</td>
-                        </tr>
-                        <tr>
                             <th>会員数</th>
                             <td>35名（2026年5月現在）</td>
                         </tr>
@@ -128,15 +125,10 @@
                             <th>連絡先</th>
                             <td>
                                 <ul>
-                                    <li>電話番号　000(000)0000</li>
                                     <li>メールアドレス　naganouni.rac@gmail.com</li>
-                                    <li>Instagram　@nagano_univ_rac</li>
+                                    <li>Instagram　@nagano_univ.rac</li>
                                 </ul>
                             </td>
-                        </tr>
-                        <tr>
-                            <th>入会費</th>
-                            <td>なし / 年会費：1000円</td>
                         </tr>
                     </tbody>
                 </table>
@@ -167,9 +159,6 @@
                 <p class="footer-address">〒386-1298<br>長野県上田市下之郷658-1 長野大学内</p>
             
                 <div class="footer-contact">
-                    <a href="tel:0268XXXXXX" class="contact-link">
-                        <span class="contact-icon">📞</span> 0268-XX-XXXX
-                    </a>
                     <a href="mailto:example@nagano-u.ac.jp" class="contact-link">
                         <span class="contact-icon">✉️</span> naganouni.rac@gmail.com
                     </a>

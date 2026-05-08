@@ -34,10 +34,10 @@
         </nav>
 
         <div class="header-right">
-            <div class="header-search">
-                <input type="text" placeholder="サイト内検索...">
-                <button type="button">検索</button>
-            </div>
+            <form action="search.html" method="get" class="header-search" style="margin: 0;">
+                <input type="text" name="q" placeholder="サイト内検索..." required>
+                <button type="submit">検索</button>
+            </form>
         </div>
     </header>
 
@@ -67,6 +67,7 @@
                 <div class="about-left">
                     <p class="about-text">
                         ローターアクトクラブでは、18歳以上の人たちが集まって、地域社会のリーダーと意見交換をしたり、リーダーシップと専門的なスキルを育んだりしながら、楽しく奉仕活動を行っています。<br><br>
+                        大都市から僻村まで、ローターアクトはさまざまな地域社会で変化をもたらしています。<br><br>
                         ローターアクト会員は、クラブの組織、運営、資金管理、活動や奉仕プロジェクトの計画・実施を自ら決定することができます。
                     </p>
                     <div class="about-btn-wrap">
@@ -75,44 +76,15 @@
                 </div>
 
                 <div class="about-right">
-                    <div class="about-highlights">
-                        <div class="highlight-item">
-                            <div class="highlight-icon">🤝</div>
-                            <div class="highlight-text">
-                                <h4>地域貢献</h4>
-                                <p>ボランティアやイベント参加</p>
-                            </div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="highlight-icon">🌱</div>
-                            <div class="highlight-text">
-                                <h4>自己成長</h4>
-                                <p>リーダーシップや企画力の向上</p>
-                            </div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="highlight-icon">🌍</div>
-                            <div class="highlight-text">
-                                <h4>交流・親睦</h4>
-                                <p>他大学や社会人とのネットワーク</p>
-                            </div>
-                        </div>
+                    <div class="about-image-wrapper">
+                        <img src="ラッシー.JPEG" alt="活動風景" class="about-image">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="next-event-section" style="max-width: 1000px; margin: 0 auto 80px auto; padding: 0 20px;">
-            <div class="next-event-card">
-                <div class="event-badge">Next Event</div>
-                <h3 class="event-title">新入生歓迎・見学定例会 開催！</h3>
-                <p class="event-desc">実際の活動内容の紹介や、みんなで楽しく交流する簡単な企画を用意しています。途中参加や、少し見学するだけでも大歓迎です！</p>
-                <div class="event-details">
-                    <p>📅 <strong>日時：</strong> 5月15日(金) 18:00〜19:30</p>
-                    <p>📍 <strong>場所：</strong> 長野大学 〇〇教室</p>
-                </div>
-            </div>
-        </section>
+        <section id="next-event-display" style="max-width: 1000px; margin: 0 auto 80px auto; padding: 0 20px; display: none;">
+            </section>
 
         <section class="top-news-section" style="max-width: 1000px; margin: 0 auto 80px auto; padding: 0 20px;">
             <div class="top-news-header">
@@ -158,16 +130,15 @@
             </div>
         </section>
 
-    </div> <footer class="site-footer">
-        <div class="footer-inner" style="max-width: 1000px; margin: 0 auto;">
+    </div> 
+
+    <footer class="site-footer">
+        <div class="footer-inner">
             <div class="footer-info">
                 <div class="footer-logo">長野大学ローターアクトクラブ</div>
                 <p class="footer-address">〒386-1298<br>長野県上田市下之郷658-1 長野大学内</p>
             
                 <div class="footer-contact">
-                    <a href="tel:0268XXXXXX" class="contact-link">
-                        <span class="contact-icon">📞</span> 0268-XX-XXXX
-                    </a>
                     <a href="mailto:naganouni.rac@gmail.com" class="contact-link">
                         <span class="contact-icon">✉️</span> naganouni.rac@gmail.com
                     </a>
@@ -175,7 +146,7 @@
             </div>
 
             <div class="footer-links">
-                <a href="https://www.instagram.com/nagano_univ.rac?igsh=MW1xanJqemwyc2l2cQ%3D%3D&utm_source=qr" target="_blank" class="instagram-link">
+                <a href="https://www.instagram.com/nagano_univ.rac" target="_blank" class="instagram-link">
                     <span class="inst-icon">📸</span> Instagram
                 </a>
             </div>
@@ -186,11 +157,11 @@
     </footer>
 
     <script>
+        // --- スライドショー制御 ---
         let currentSlide = 0;
+        const slideWrapper = document.getElementById('slideWrapper');
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
-        const slideWrapper = document.getElementById('slideWrapper');
-        let slideInterval;
 
         function updateSlidePosition() {
             slideWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -204,74 +175,82 @@
             resetTimer();
         }
 
-        function startTimer() {
-            slideInterval = setInterval(() => { moveSlide(1); }, 5000);
-        }
+        let slideInterval = setInterval(() => { moveSlide(1); }, 5000);
+        function resetTimer() { clearInterval(slideInterval); slideInterval = setInterval(() => { moveSlide(1); }, 5000); }
 
-        function resetTimer() {
-            clearInterval(slideInterval);
-            startTimer();
-        }
-        startTimer();
-    </script>
-
-    <script>
-        const TOP_SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
-        const topUrl = `https://docs.google.com/spreadsheets/d/${TOP_SHEET_ID}/gviz/tq?tqx=out:json`;
+        // --- スプレッドシート連動 ---
+        const SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
+        const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
         const getVal = (row, idx) => (row.length > idx && row[idx]) ? (row[idx].f || row[idx].v) : '';
 
-        fetch(topUrl)
-            .then(response => response.text())
+        fetch(sheetUrl)
+            .then(res => res.text())
             .then(text => {
-                const jsonString = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/)[1];
-                const rows = JSON.parse(jsonString).table.rows;
-                rows.reverse();
+                const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/)[1]);
+                const rows = json.table.rows;
 
-                const topNewsList = document.getElementById('top-news-list');
-                topNewsList.innerHTML = ''; 
+                // 1. Next Event の読み込み
+                let latestEvent = null;
+                for (let i = rows.length - 1; i >= 0; i--) {
+                    if (rows[i].c && getVal(rows[i].c, 2) === 'イベント') {
+                        latestEvent = rows[i].c;
+                        break;
+                    }
+                }
+                const eventBox = document.getElementById('next-event-display');
+                if (latestEvent) {
+                    eventBox.innerHTML = `
+                        <div class="next-event-card">
+                            <div class="event-badge">Next Event</div>
+                            <h3 class="event-title">${getVal(latestEvent, 3)}</h3>
+                            <p class="event-desc">${getVal(latestEvent, 6).replace(/\n/g, '<br>')}</p>
+                            <div class="event-details">
+                                <p>📅 <strong>日時：</strong> ${getVal(latestEvent, 8) || '未定'}</p>
+                                <p>📍 <strong>場所：</strong> ${getVal(latestEvent, 9) || '未定'}</p>
+                            </div>
+                        </div>`;
+                    eventBox.style.display = 'block';
+                }
 
-                const displayCount = Math.min(rows.length, 3); 
+                // 2. Latest News の読み込み（最新3件）
+                const newsList = document.getElementById('top-news-list');
+                newsList.innerHTML = '';
+                const sortedRows = [...rows].reverse();
+                let newsCount = 0;
 
-                for (let i = 0; i < displayCount; i++) {
-                    const row = rows[i].c;
-                    if (!row || !row[0]) continue; 
+                for (let i = 0; i < sortedRows.length && newsCount < 3; i++) {
+                    const row = sortedRows[i].c;
+                    if (!row || !getVal(row, 0)) continue;
+                    newsCount++;
 
-                    const id = getVal(row, 0);
-                    const date = getVal(row, 1);
-                    const category = getVal(row, 2) || 'お知らせ';
-                    const title = getVal(row, 3);
-                    const bodyText = getVal(row, 6);
-
+                    const id = getVal(row, 0), date = getVal(row, 1), category = getVal(row, 2) || 'お知らせ', title = getVal(row, 3), body = getVal(row, 6);
+                    
                     let catClass = 'cat-event';
                     if (category === '活動報告') catClass = 'cat-report';
                     if (category === '重要') catClass = 'cat-important';
 
-                    let snippetHTML = '';
-                    if (bodyText) {
-                        let snippet = bodyText.length > 50 ? bodyText.substring(0, 50) + '...' : bodyText;
-                        snippetHTML = `<div style="font-size: 13px; color: #666; margin-top: 5px;">${snippet}</div>`;
+                    let categoryHTML = `<span class="news-category ${catClass}">${category}</span>`;
+                    if (category === '幹事日記') {
+                        categoryHTML = `<a href="diary.html" class="news-category ${catClass}" style="text-decoration: none; position: relative; z-index: 10;">${category}</a>`;
                     }
 
-                    let listItemHTML = `
-                        <a href="article.html?id=${id}" class="news-link" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-                            <div class="news-meta" style="flex-shrink: 0;">
-                                <span class="news-date">${date}</span>
-                                <span class="news-category ${catClass}">${category}</span>
-                            </div>
-                            <div style="flex-grow: 1; margin-left: 20px;">
-                                <div class="news-title" style="font-weight: 800;">${title}</div>
-                                ${snippetHTML}
-                            </div>
-                        </a>
-                    `;
+                    let snippet = body ? `<div style="font-size: 13px; color: #666; margin-top: 5px;">${body.length > 50 ? body.substring(0, 50) + '...' : body}</div>` : '';
 
-                    const li = document.createElement('li');
-                    li.className = 'news-item';
-                    li.innerHTML = listItemHTML;
-                    topNewsList.appendChild(li);
+                    newsList.innerHTML += `
+                        <li class="news-item">
+                            <div class="news-link" style="display: flex; align-items: center; position: relative;">
+                                <div class="news-meta" style="flex-shrink: 0; position: relative; z-index: 11;">
+                                    <span class="news-date">${date}</span>
+                                    ${categoryHTML}
+                                </div>
+                                <a href="article.html?id=${id}" style="flex-grow: 1; margin-left: 20px; text-decoration: none; color: inherit; display: block; z-index: 5;">
+                                    <div class="news-title" style="font-weight: 800;">${title}</div>
+                                    ${snippet}
+                                </a>
+                            </div>
+                        </li>`;
                 }
             });
     </script>
-
 </body>
 </html>
