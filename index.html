@@ -173,20 +173,52 @@
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
 
-        function updateSlidePosition() {
-            slideWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+        // 初期設定：スマホの場合は最初のスライドを表示
+        function initSlideshow() {
+            if (window.innerWidth <= 768) {
+                slides.forEach(s => s.classList.remove('active'));
+                slides[0].classList.add('active');
+            }
         }
+        initSlideshow();
 
         function moveSlide(step) {
-            currentSlide += step;
-            if (currentSlide >= totalSlides) currentSlide = 0;
-            else if (currentSlide < 0) currentSlide = totalSlides - 1;
-            updateSlidePosition();
+            if (window.innerWidth > 768) {
+                // 【PC版：スライド移動】
+                currentSlide += step;
+                if (currentSlide >= totalSlides) currentSlide = 0;
+                else if (currentSlide < 0) currentSlide = totalSlides - 1;
+                
+                slideWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            } else {
+                // 【スマホ版：ふわっとフェード】
+                slides[currentSlide].classList.remove('active');
+                
+                currentSlide += step;
+                if (currentSlide >= totalSlides) currentSlide = 0;
+                else if (currentSlide < 0) currentSlide = totalSlides - 1;
+                
+                slides[currentSlide].classList.add('active');
+            }
             resetTimer();
         }
 
+        // 自動再生
         let slideInterval = setInterval(() => { moveSlide(1); }, 5000);
-        function resetTimer() { clearInterval(slideInterval); slideInterval = setInterval(() => { moveSlide(1); }, 5000); }
+        function resetTimer() { 
+            clearInterval(slideInterval); 
+            slideInterval = setInterval(() => { moveSlide(1); }, 5000); 
+        }
+
+        // 画面サイズが変わった時に表示をリセット（PC/スマホ切り替わり時用）
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                slideWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            } else {
+                slides.forEach(s => s.classList.remove('active'));
+                slides[currentSlide].classList.add('active');
+            }
+        });
 
         // --- スプレッドシート連動 ---
         const SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
