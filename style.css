@@ -522,7 +522,6 @@ body {
     /* 3本線ボタンのデザイン */
     .hamburger { display: flex; flex-direction: column; justify-content: space-between; width: 25px; height: 18px; cursor: pointer; z-index: 1100; }
     .hamburger span { display: block; width: 100%; height: 3px; background-color: var(--text-main); border-radius: 2px; transition: all 0.3s ease; }
-    /* タップして[×]に変わるアニメーション */
     .hamburger.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
     .hamburger.active span:nth-child(2) { opacity: 0; }
     .hamburger.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
@@ -530,15 +529,11 @@ body {
     /* ロゴを真ん中に */
     .header-logo { font-size: 13px; margin: 0 10px; text-align: center; flex-grow: 1; line-height: 1.2; }
     
-    /* 検索窓を少し小さくして右上に配置 */
-    .header-right { width: auto; margin: 0; display: block; }
-    .header-search form { width: 130px; height: 30px; border-radius: 4px; justify-content: space-between; }
-    .header-search input { width: 80px; font-size: 12px; padding: 0 5px; }
-    .header-search button { font-size: 12px; padding: 0 8px; }
+    /* 🌟 スマホ版では検索窓を含む右側エリアを完全に非表示にする */
+    .header-right { display: none !important; }
 
     /* 左からスライドしてくるメニュー本体 */
     .header-nav { position: fixed; top: 0; left: -100%; width: 250px; height: 100vh; background-color: var(--card-bg); box-shadow: 4px 0 10px rgba(0,0,0,0.1); transition: left 0.3s ease; z-index: 1050; padding-top: 70px; overflow-y: auto; margin: 0; }
-    /* 開いた状態（画面内に入ってくる） */
     .header-nav.active { left: 0; } 
     
     .header-nav ul { flex-direction: column; gap: 0; padding: 0; }
