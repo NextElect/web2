@@ -11,6 +11,12 @@
 <body class="home-body">
 
     <header class="site-header">
+
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <div class="header-logo">
             長野大学<br>ローターアクトクラブ
         </div>
@@ -251,6 +257,17 @@
                         </li>`;
                 }
             });
+    </script>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const headerNav = document.querySelector('.header-nav');
+        if(hamburger) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active'); /* 3本線をバツ印に変える */
+                headerNav.classList.toggle('active'); /* メニューを横から出す */
+            });
+        }
     </script>
 </body>
 </html>
