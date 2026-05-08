@@ -10,8 +10,17 @@
 
     <!-- ★ ヘッダー部分 ★ -->
     <header class="site-header">
-        <div class="header-logo">長野大学<br>ローターアクトクラブ</div>
+        
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
+        <div class="header-logo">
+            長野大学<br>ローターアクトクラブ
+        </div>
+        
         <nav class="header-nav">
             <ul>
                 <li><a href="index.html">ホーム</a></li>
@@ -142,6 +151,17 @@
                     activityList.innerHTML += articleHTML;
                 }
             }).catch(e => console.error(e));
+    </script>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const headerNav = document.querySelector('.header-nav');
+        if(hamburger) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                headerNav.classList.toggle('active');
+            });
+        }
     </script>
 
 </body>

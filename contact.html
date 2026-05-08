@@ -10,6 +10,13 @@
 
     <!-- ★ ヘッダー部分 ★ -->
     <header class="site-header">
+        
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
         <div class="header-logo">
             長野大学<br>ローターアクトクラブ
         </div>
@@ -94,6 +101,17 @@
             <p class="copyright">&copy; 2026 Nagano University Rotary Act Club</p>
         </div>
     </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const headerNav = document.querySelector('.header-nav');
+        if(hamburger) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                headerNav.classList.toggle('active');
+            });
+        }
+    </script>
 
 </body>
 </html>
