@@ -11,14 +11,16 @@
 <body class="home-body">
 
     <header class="site-header">
-
+        
         <div class="hamburger" id="hamburger">
             <span></span>
             <span></span>
             <span></span>
         </div>
+
         <div class="header-logo">
             <img src="logo.png" alt="クラブロゴ" class="logo-img">
+            <div class="logo-text">長野大学<br>ローターアクトクラブ</div>
         </div>
         
         <nav class="header-nav">
@@ -67,13 +69,13 @@
     <div class="page-body">
 
         <section class="about-section">
-            <h2>About Us <br><span style="font-size: 16px; color: #666;">ローターアクトクラブとは？</span></h2>
+            <h2 class="section-title">About Us</h2>
+            <p class="section-subtitle">ローターアクトクラブとは？</p>
             
             <div class="about-layout">
                 <div class="about-left">
                     <p class="about-text">
                         ローターアクトクラブでは、18歳以上の人たちが集まって、地域社会のリーダーと意見交換をしたり、リーダーシップと専門的なスキルを育んだりしながら、楽しく奉仕活動を行っています。<br><br>
-                        大都市から僻村まで、ローターアクトはさまざまな地域社会で変化をもたらしています。<br><br>
                         ローターアクト会員は、クラブの組織、運営、資金管理、活動や奉仕プロジェクトの計画・実施を自ら決定することができます。
                     </p>
                     <div class="about-btn-wrap">
@@ -83,16 +85,16 @@
 
                 <div class="about-right">
                     <div class="about-image-wrapper">
-                        <img src="ラッシー.JPEG" alt="活動風景" class="about-image">
+                        <img src="about-pic.jpg" alt="活動風景" class="about-image">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="next-event-display" style="max-width: 1000px; margin: 0 auto 80px auto; padding: 0 20px; display: none;">
+        <section id="next-event-display" class="next-event-section" style="max-width: 1000px; width: 100%; margin: 0 auto 80px auto; display: none;">
             </section>
 
-        <section class="top-news-section" style="max-width: 1000px; margin: 0 auto 80px auto; padding: 0 20px;">
+        <section class="top-news-section">
             <div class="top-news-header">
                 <h2 class="section-title">Latest News</h2>
                 <p class="section-subtitle">クラブの最新情報をチェック！</p>
@@ -108,11 +110,9 @@
             </div>
         </section>
 
-        <section class="voices-section" style="max-width: 1000px; margin: 0 auto 80px auto; padding: 0 20px;">
-            <div class="voices-header" style="text-align: center; margin-bottom: 30px;">
-                <h2 class="section-title">Members' Voices</h2>
-                <p class="section-subtitle">現役メンバーに聞いてみました！</p>
-            </div>
+        <section class="voices-section" style="max-width: 1000px; width: 100%; margin: 0 auto 80px auto;">
+            <h2 class="section-title">Members' Voices</h2>
+            <p class="section-subtitle">現役メンバーに聞いてみました！</p>
             
             <div class="voices-grid">
                 <div class="voice-card">
@@ -128,7 +128,7 @@
             </div>
         </section>
 
-        <section class="cta-section" style="max-width: 1000px; margin: 0 auto 80px auto; padding: 0 20px;">
+        <section class="cta-section" style="max-width: 1000px; width: 100%; margin: 0 auto 80px auto;">
             <div class="cta-box">
                 <h2 class="cta-title">少しでも気になったら<br>遊びに来てね！</h2>
                 <p class="cta-text">見学希望や質問など、いつでも大歓迎です。<br>SNSのDMやお問い合わせページからお気軽にどうぞ！</p>
@@ -155,7 +155,6 @@
                 <div class="footer-logo-right">
                     <img src="logo.png" alt="クラブロゴ" class="footer-logo-img">
                 </div>
-                
                 <a href="https://www.instagram.com/nagano_univ.rac" target="_blank" class="instagram-link">
                     <span class="inst-icon">📸</span> Instagram
                 </a>
@@ -167,13 +166,22 @@
     </footer>
 
     <script>
-        // --- スライドショー制御 ---
+        // --- ハンバーガーメニュー制御 ---
+        const hamburger = document.getElementById('hamburger');
+        const headerNav = document.querySelector('.header-nav');
+        if(hamburger) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                headerNav.classList.toggle('active');
+            });
+        }
+
+        // --- スライドショー制御（PC:スライド / スマホ:フェード） ---
         let currentSlide = 0;
         const slideWrapper = document.getElementById('slideWrapper');
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
 
-        // 初期設定：スマホの場合は最初のスライドを表示
         function initSlideshow() {
             if (window.innerWidth <= 768) {
                 slides.forEach(s => s.classList.remove('active'));
@@ -184,33 +192,28 @@
 
         function moveSlide(step) {
             if (window.innerWidth > 768) {
-                // 【PC版：スライド移動】
+                // PC版：スライド移動
                 currentSlide += step;
                 if (currentSlide >= totalSlides) currentSlide = 0;
                 else if (currentSlide < 0) currentSlide = totalSlides - 1;
-                
                 slideWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
             } else {
-                // 【スマホ版：ふわっとフェード】
+                // スマホ版：ふわっとフェード
                 slides[currentSlide].classList.remove('active');
-                
                 currentSlide += step;
                 if (currentSlide >= totalSlides) currentSlide = 0;
                 else if (currentSlide < 0) currentSlide = totalSlides - 1;
-                
                 slides[currentSlide].classList.add('active');
             }
             resetTimer();
         }
 
-        // 自動再生
         let slideInterval = setInterval(() => { moveSlide(1); }, 5000);
         function resetTimer() { 
             clearInterval(slideInterval); 
             slideInterval = setInterval(() => { moveSlide(1); }, 5000); 
         }
 
-        // 画面サイズが変わった時に表示をリセット（PC/スマホ切り替わり時用）
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
                 slideWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -220,90 +223,68 @@
             }
         });
 
-        // --- スプレッドシート連動 ---
+        // --- スプレッドシート連動（Next Event & News） ---
         const SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
         const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
         const getVal = (row, idx) => (row.length > idx && row[idx]) ? (row[idx].f || row[idx].v) : '';
 
-        fetch(sheetUrl)
-            .then(res => res.text())
-            .then(text => {
-                const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/)[1]);
-                const rows = json.table.rows;
+        fetch(sheetUrl).then(res => res.text()).then(text => {
+            const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/)[1]);
+            const rows = json.table.rows;
 
-                // 1. Next Event の読み込み
-                let latestEvent = null;
-                for (let i = rows.length - 1; i >= 0; i--) {
-                    if (rows[i].c && getVal(rows[i].c, 2) === 'イベント') {
-                        latestEvent = rows[i].c;
-                        break;
-                    }
+            // 1. Next Event の読み込み
+            let latestEvent = null;
+            for (let i = rows.length - 1; i >= 0; i--) {
+                if (rows[i].c && getVal(rows[i].c, 2) === 'イベント') {
+                    latestEvent = rows[i].c;
+                    break;
                 }
-                const eventBox = document.getElementById('next-event-display');
-                if (latestEvent) {
-                    eventBox.innerHTML = `
-                        <div class="next-event-card">
-                            <div class="event-badge">Next Event</div>
-                            <h3 class="event-title">${getVal(latestEvent, 3)}</h3>
-                            <p class="event-desc">${getVal(latestEvent, 6).replace(/\n/g, '<br>')}</p>
-                            <div class="event-details">
-                                <p>📅 <strong>日時：</strong> ${getVal(latestEvent, 8) || '未定'}</p>
-                                <p>📍 <strong>場所：</strong> ${getVal(latestEvent, 9) || '未定'}</p>
+            }
+            const eventBox = document.getElementById('next-event-display');
+            if (latestEvent) {
+                eventBox.innerHTML = `
+                    <div class="next-event-card">
+                        <div class="event-badge">Next Event</div>
+                        <h3 class="event-title">${getVal(latestEvent, 3)}</h3>
+                        <p class="event-desc">${getVal(latestEvent, 6).replace(/\n/g, '<br>')}</p>
+                        <div class="event-details">
+                            <p>📅 <strong>日時：</strong> ${getVal(latestEvent, 8) || '未定'}</p>
+                            <p>📍 <strong>場所：</strong> ${getVal(latestEvent, 9) || '未定'}</p>
+                        </div>
+                    </div>`;
+                eventBox.style.display = 'block';
+            }
+
+            // 2. Latest News の読み込み（最新3件）
+            const newsList = document.getElementById('top-news-list');
+            newsList.innerHTML = '';
+            const sortedRows = [...rows].reverse();
+            let newsCount = 0;
+
+            for (let i = 0; i < sortedRows.length && newsCount < 3; i++) {
+                const row = sortedRows[i].c;
+                if (!row || !getVal(row, 0)) continue;
+                newsCount++;
+
+                const id = getVal(row, 0), date = getVal(row, 1), category = getVal(row, 2) || 'お知らせ', title = getVal(row, 3);
+                let catClass = 'cat-default';
+                if (category === '活動報告') catClass = 'cat-report';
+                if (category === 'イベント') catClass = 'cat-event';
+                if (category === '重要') catClass = 'cat-important';
+                if (category === '幹事日記') catClass = 'cat-event';
+
+                newsList.innerHTML += `
+                    <li class="news-item">
+                        <a href="article.html?id=${id}" class="news-link">
+                            <div class="news-meta">
+                                <span class="news-date">${date}</span>
+                                <span class="news-category ${catClass}">${category}</span>
                             </div>
-                        </div>`;
-                    eventBox.style.display = 'block';
-                }
-
-                // 2. Latest News の読み込み（最新3件）
-                const newsList = document.getElementById('top-news-list');
-                newsList.innerHTML = '';
-                const sortedRows = [...rows].reverse();
-                let newsCount = 0;
-
-                for (let i = 0; i < sortedRows.length && newsCount < 3; i++) {
-                    const row = sortedRows[i].c;
-                    if (!row || !getVal(row, 0)) continue;
-                    newsCount++;
-
-                    const id = getVal(row, 0), date = getVal(row, 1), category = getVal(row, 2) || 'お知らせ', title = getVal(row, 3), body = getVal(row, 6);
-                    
-                    let catClass = 'cat-event';
-                    if (category === '活動報告') catClass = 'cat-report';
-                    if (category === '重要') catClass = 'cat-important';
-
-                    let categoryHTML = `<span class="news-category ${catClass}">${category}</span>`;
-                    if (category === '幹事日記') {
-                        categoryHTML = `<a href="diary.html" class="news-category ${catClass}" style="text-decoration: none; position: relative; z-index: 10;">${category}</a>`;
-                    }
-
-                    let snippet = body ? `<div style="font-size: 13px; color: #666; margin-top: 5px;">${body.length > 50 ? body.substring(0, 50) + '...' : body}</div>` : '';
-
-                    newsList.innerHTML += `
-                        <li class="news-item">
-                            <div class="news-link" style="display: flex; align-items: center; position: relative;">
-                                <div class="news-meta" style="flex-shrink: 0; position: relative; z-index: 11;">
-                                    <span class="news-date">${date}</span>
-                                    ${categoryHTML}
-                                </div>
-                                <a href="article.html?id=${id}" style="flex-grow: 1; margin-left: 20px; text-decoration: none; color: inherit; display: block; z-index: 5;">
-                                    <div class="news-title" style="font-weight: 800;">${title}</div>
-                                    ${snippet}
-                                </a>
-                            </div>
-                        </li>`;
-                }
-            });
-    </script>
-
-    <script>
-        const hamburger = document.getElementById('hamburger');
-        const headerNav = document.querySelector('.header-nav');
-        if(hamburger) {
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active'); /* 3本線をバツ印に変える */
-                headerNav.classList.toggle('active'); /* メニューを横から出す */
-            });
-        }
+                            <div class="news-title">${title}</div>
+                        </a>
+                    </li>`;
+            }
+        });
     </script>
 </body>
 </html>
