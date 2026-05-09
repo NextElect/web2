@@ -338,7 +338,8 @@ body {
     .home-body { padding-top: 130px !important; }
     .home-body .page-body { padding-top: 30px !important; }
     
-    .main-visual-full { height: 50vh; min-height: 350px; aspect-ratio: auto; }
+    /* 🌟 スマホでもPCと同じように画面いっぱいに広げる */
+    .main-visual-full { height: calc(100vh - 60px); min-height: 500px; }
     
     /* ↓↓↓ 今回追加・修正したスマホ専用フェードCSS ↓↓↓ */
     .slide-wrapper {
