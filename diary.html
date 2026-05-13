@@ -25,9 +25,15 @@
             <ul>
                 <li><a href="index.html">ホーム</a></li>
                 <li><a href="about.html">概要</a></li>
-                <li><a href="activity.html">活動内容</a></li>
                 <li class="dropdown">
-                    <a href="log.html" class="dropbtn">活動記録 ▾</a>
+                    <a href="javascript:void(0)" class="dropbtn">活動内容 ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="activity-international.html">国際奉仕</a></li>
+                        <li><a href="activity-local.html">地域奉仕</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)" class="dropbtn">活動記録 ▾</a>
                     <ul class="dropdown-content">
                         <li><a href="log.html">これまでの活動</a></li>
                         <li><a href="diary.html">幹事日記</a></li>
@@ -63,6 +69,18 @@
     </div>
 
     <script>
+        /* 🌟 GoogleドライブのURLを自動変換する関数（最新・安定版！） */
+        function convertDriveImageUrl(url) {
+            if (!url) return '';
+            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                // 従来の uc ではなく、より確実に表示される thumbnail 形式に変換します
+                // sz=w1000 は「横幅1000pxの綺麗な画質で読み込む」という指定です
+                return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+            }
+            return url;
+        }
+
         const SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
@@ -81,29 +99,40 @@
                 const d = r.c;
                 if (getVal(d, 2) === '幹事日記') {
                     count++;
-                    const id = getVal(d, 0), date = getVal(d, 1), title = getVal(d, 3), body = getVal(d, 6), pdf = getVal(d, 7);
+                    const id = getVal(d, 0), date = getVal(d, 1), title = getVal(d, 3), imgUrl = getVal(d, 4), body = getVal(d, 6), pdf = getVal(d, 7);
+                    
                     const snippet = body ? (body.length > 80 ? body.substring(0, 80) + '...' : body) : '';
                     
-                    let pdfIcon = pdf ? '<span style="background:#eef; padding:2px 8px; border-radius:4px; font-size:12px; margin-right:10px; border:1px solid var(--accent-blue);">📄 PDFあり</span>' : '';
+                    // PDFアイコン（シンプルなクラス指定に戻す）
+                    let pdfIcon = pdf ? '<span class="pdf-badge" style="background:#eef; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:800; border:1px dashed var(--accent-blue);">📄 PDFあり</span>' : '';
+                    
+                    // 画像
+                    let imageHTML = '';
+                    if (imgUrl) {
+                        const finalImgUrl = convertDriveImageUrl(imgUrl);
+                        imageHTML = `<div class="activity-img"><img src="${finalImgUrl}" alt="日記画像" style="width:100%; object-fit:cover;"></div>`;
+                    }
 
+                    // 🌟 余計なスタイルを消し、純粋なHTML構造に戻しました
                     list.innerHTML += `
                         <article class="activity-card">
+                            ${imageHTML}
                             <div class="activity-content" style="width: 100%;">
-                                <div class="activity-meta">
-                                    <span class="activity-date">${date}</span>
-                                    <span class="activity-tag" style="background:var(--accent-yellow); color:#333;">幹事日記</span>
+                                <div class="activity-meta" style="margin-bottom: 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <span class="activity-date" style="font-weight: 800; font-size: 14px;">${date}</span>
+                                    <span class="activity-tag" style="background:var(--accent-yellow); color:#333; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 20px;">幹事日記</span>
                                     ${pdfIcon}
                                 </div>
-                                <h2 class="activity-heading">${title}</h2>
-                                <p class="activity-text">${snippet}</p>
-                                <div style="text-align:right; margin-top:15px;">
-                                    <a href="article.html?id=${id}" class="news-more-btn">詳細・PDFを見る &rarr;</a>
+                                <h2 class="activity-heading" style="font-size: 20px; font-weight: 900; margin-bottom: 15px; line-height: 1.4;">${title}</h2>
+                                <p class="activity-text" style="font-size: 14px; line-height: 1.6; margin-bottom: 25px; color: #555;">${snippet}</p>
+                                <div style="text-align: center;">
+                                    <a href="article.html?id=${id}" class="news-more-btn">詳細を読む &rarr;</a>
                                 </div>
                             </div>
                         </article>`;
                 }
             });
-            if(count === 0) list.innerHTML = '<div>まだ投稿がありません。</div>';
+            if(count === 0) list.innerHTML = '<div style="text-align:center; padding:50px;">まだ投稿がありません。</div>';
         });
     </script>
 
@@ -146,6 +175,24 @@
                 headerNav.classList.toggle('active');
             });
         }
+
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            const dropbtn = dropdown.querySelector('.dropbtn');
+            if (dropbtn) {
+                dropbtn.addEventListener('click', (e) => {
+                    e.preventDefault(); // リンクの移動を完全にストップ
+                    
+                    // 他の開いているメニューを閉じる（任意：開けっ放しにしたい場合は下の3行を消してもOKです）
+                    dropdowns.forEach(other => {
+                        if (other !== dropdown) other.classList.remove('active');
+                    });
+
+                    // タップしたメニューを開閉する
+                    dropdown.classList.toggle('active');
+                });
+            }
+        });
     </script>
 
 </body>

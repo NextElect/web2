@@ -26,9 +26,15 @@
             <ul>
                 <li><a href="index.html">ホーム</a></li>
                 <li><a href="about.html">概要</a></li>
-                <li><a href="activity.html">活動内容</a></li>
                 <li class="dropdown">
-                    <a href="log.html" class="dropbtn">活動記録 ▾</a>
+                    <a href="javascript:void(0)" class="dropbtn">活動内容 ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="activity-international.html">国際奉仕</a></li>
+                        <li><a href="activity-local.html">地域奉仕</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)" class="dropbtn">活動記録 ▾</a>
                     <ul class="dropdown-content">
                         <li><a href="log.html">これまでの活動</a></li>
                         <li><a href="diary.html">幹事日記</a></li>
@@ -180,6 +186,24 @@
                 headerNav.classList.toggle('active');
             });
         }
+
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            const dropbtn = dropdown.querySelector('.dropbtn');
+            if (dropbtn) {
+                dropbtn.addEventListener('click', (e) => {
+                    e.preventDefault(); // リンクの移動を完全にストップ
+                    
+                    // 他の開いているメニューを閉じる（任意：開けっ放しにしたい場合は下の3行を消してもOKです）
+                    dropdowns.forEach(other => {
+                        if (other !== dropdown) other.classList.remove('active');
+                    });
+
+                    // タップしたメニューを開閉する
+                    dropdown.classList.toggle('active');
+                });
+            }
+        });
     </script>
 
 </body>

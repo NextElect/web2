@@ -25,9 +25,15 @@
             <ul>
                 <li><a href="index.html">ホーム</a></li>
                 <li><a href="about.html">概要</a></li>
-                <li><a href="activity.html">活動内容</a></li>
                 <li class="dropdown">
-                    <a href="log.html" class="dropbtn">活動記録 ▾</a>
+                    <a href="javascript:void(0)" class="dropbtn">活動内容 ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="activity-international.html">国際奉仕</a></li>
+                        <li><a href="activity-local.html">地域奉仕</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)" class="dropbtn">活動記録 ▾</a>
                     <ul class="dropdown-content">
                         <li><a href="log.html">これまでの活動</a></li>
                         <li><a href="diary.html">幹事日記</a></li>
@@ -85,6 +91,17 @@
     </footer>
 
     <script>
+        /* 🌟 GoogleドライブのURLを自動変換する関数（最新・安定版！） */
+        function convertDriveImageUrl(url) {
+            if (!url) return '';
+            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                // 確実に表示される thumbnail 形式に変換（横幅1000pxの綺麗で軽い画像を取得）
+                return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+            }
+            return url;
+        }
+
         const SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
         const targetId = new URLSearchParams(window.location.search).get('id');
@@ -110,14 +127,10 @@
                 if (category === '重要') catClass = 'cat-important';
                 if (category === '幹事日記') catClass = 'cat-event';
 
-                // 画像表示（幹事日記以外で画像がある場合）
+                // 🌟 画像表示（幹事日記以外で画像がある場合、最新の変換関数を通す）
                 let imageHTML = '';
                 if (category !== '幹事日記' && imgUrl) {
-                    let finalImgUrl = imgUrl;
-                    if (imgUrl.includes('drive.google.com')) {
-                        const match = imgUrl.match(/\/d\/(.+?)\//);
-                        if (match) finalImgUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-                    }
+                    const finalImgUrl = convertDriveImageUrl(imgUrl);
                     imageHTML = `<div class="article-main-img"><img src="${finalImgUrl}" alt="記事画像"></div>`;
                 }
 
@@ -155,6 +168,25 @@
                 headerNav.classList.toggle('active');
             });
         }
+
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            const dropbtn = dropdown.querySelector('.dropbtn');
+            if (dropbtn) {
+                dropbtn.addEventListener('click', (e) => {
+                    e.preventDefault(); // リンクの移動を完全にストップ
+                    
+                    // 他の開いているメニューを閉じる（任意：開けっ放しにしたい場合は下の3行を消してもOKです）
+                    dropdowns.forEach(other => {
+                        if (other !== dropdown) other.classList.remove('active');
+                    });
+
+                    // タップしたメニューを開閉する
+                    dropdown.classList.toggle('active');
+                });
+            }
+        });
     </script>
+
 </body>
 </html>

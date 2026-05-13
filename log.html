@@ -26,9 +26,15 @@
             <ul>
                 <li><a href="index.html">ホーム</a></li>
                 <li><a href="about.html">概要</a></li>
-                <li><a href="activity.html">活動内容</a></li>
                 <li class="dropdown">
-                    <a href="log.html" class="dropbtn">活動記録 ▾</a>
+                    <a href="javascript:void(0)" class="dropbtn">活動内容 ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="activity-international.html">国際奉仕</a></li>
+                        <li><a href="activity-local.html">地域奉仕</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)" class="dropbtn">活動記録 ▾</a>
                     <ul class="dropdown-content">
                         <li><a href="log.html">これまでの活動</a></li>
                         <li><a href="diary.html">幹事日記</a></li>
@@ -100,6 +106,18 @@
 
     <!-- ★ スプレッドシートから一覧を自動生成するプログラム ★ -->
     <script>
+        /* 🌟 GoogleドライブのURLを自動変換する関数（最新・安定版！） */
+        function convertDriveImageUrl(url) {
+            if (!url) return '';
+            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                // 従来の uc ではなく、より確実に表示される thumbnail 形式に変換します
+                // sz=w1000 は「横幅1000pxの綺麗な画質で読み込む」という指定です
+                return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+            }
+            return url;
+        }
+
         const ACTIVITY_SHEET_ID = '1hLWEqfJHSYtHm4iIYa53wFP2eFq6mSdjlKo8hhfUUVc'; 
         const url = `https://docs.google.com/spreadsheets/d/${ACTIVITY_SHEET_ID}/gviz/tq?tqx=out:json`;
 
@@ -124,21 +142,25 @@
                     const date = getVal(row, 1);
                     const category = getVal(row, 2) || '活動報告';
                     if (category !== '活動報告') continue;
-                    const title = getVal(row, 3)
-                    let imgUrl = getVal(row, 5); // F列: 画像
+                    const title = getVal(row, 3);
+                    let imgUrl = getVal(row, 4); // 🌟 E列: 画像（5から4に変更）
                     let bodyText = getVal(row, 6); // G列: 本文
-                    if (!bodyText) continue;
 
                     // ★重要：本文が空っぽの記事（ただのお知らせ）は活動記録に出さない！
                     if (!bodyText) continue;
 
-                    if (!imgUrl) imgUrl = 'https://via.placeholder.com/400x300/e9ecef/868e96?text=No+Image';
+                    // 🌟 画像URLの処理（ドライブURLなら自動変換、空ならダミー画像）
+                    let finalImgUrl = 'https://via.placeholder.com/400x300/e9ecef/868e96?text=No+Image';
+                    if (imgUrl) {
+                        finalImgUrl = convertDriveImageUrl(imgUrl);
+                    }
+
                     let snippet = bodyText.length > 60 ? bodyText.substring(0, 60) + '...' : bodyText;
 
                     const articleHTML = `
                         <article class="activity-card">
                             <div class="activity-img">
-                                <img src="${imgUrl}" alt="活動写真">
+                                <img src="${finalImgUrl}" alt="活動写真">
                             </div>
                             <div class="activity-content">
                                 <div class="activity-meta">
@@ -167,6 +189,24 @@
                 headerNav.classList.toggle('active');
             });
         }
+
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            const dropbtn = dropdown.querySelector('.dropbtn');
+            if (dropbtn) {
+                dropbtn.addEventListener('click', (e) => {
+                    e.preventDefault(); // リンクの移動を完全にストップ
+                    
+                    // 他の開いているメニューを閉じる（任意：開けっ放しにしたい場合は下の3行を消してもOKです）
+                    dropdowns.forEach(other => {
+                        if (other !== dropdown) other.classList.remove('active');
+                    });
+
+                    // タップしたメニューを開閉する
+                    dropdown.classList.toggle('active');
+                });
+            }
+        });
     </script>
 
 </body>
