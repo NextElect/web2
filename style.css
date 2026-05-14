@@ -1,6 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&display=swap');
 
 /* ====================================================
+   0. はみ出し・見切れ防止の最強リセット（全要素共通）
+   ==================================================== */
+*, *::before, *::after {
+    box-sizing: border-box; 
+    overflow-wrap: break-word; 
+    word-wrap: break-word;
+}
+
+img, iframe, video {
+    max-width: 100%; 
+    height: auto;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* ====================================================
    1. 全体設定・カラーパレット（Variables & Base）
    ==================================================== */
 :root {
@@ -20,20 +44,21 @@ body {
     font-family: 'M PLUS Rounded 1c', 'ヒラギノ丸ゴ ProN', 'Hiragino Maru Gothic ProN', 'メイリオ', Meiryo, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-main);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 
     line-height: 1.75;
     letter-spacing: 0.05em;
-    overflow-wrap: break-word;
     word-break: auto-phrase;
+
+    /* MacとWindowsの文字の太さ・余白の差をなくす魔法 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .page-body {
-    flex: 1;
+    flex: 1 0 auto; /* フッターを下に押しやるバネ */
     padding: 130px 20px 80px; 
     display: flex; 
     flex-direction: column; 
@@ -59,7 +84,6 @@ body {
     z-index: 1000; box-shadow: 0 4px 0px var(--accent-blue);
 }
 
-/* PC版ハンバーガー隠す */
 .hamburger { display: none; }
 
 .header-logo {
@@ -81,47 +105,38 @@ body {
 
 .header-right { display: flex; align-items: center; gap: 20px; }
 .header-search, .header-search form { display: flex; align-items: stretch; border: 2px solid #333; border-radius: 6px; overflow: hidden; height: 38px; margin: 0; background-color: #fff; }
-.header-search input { border: none; padding: 0 12px; outline: none; font-size: 14px; width: 160px; background-color: transparent; color: var(--text-main); font-family: inherit; font-weight: 500; }
-.header-search button { background-color: #333; color: #fff; border: none; padding: 0 15px; cursor: pointer; font-weight: bold; font-size: 14px; font-family: inherit; transition: background-color 0.2s; }
+
+/* 🌟 WindowsとMacの検索バーのズレをなくすリセット魔法 */
+.header-search input { 
+    -webkit-appearance: none; -moz-appearance: none; appearance: none;
+    box-sizing: border-box; margin: 0; vertical-align: middle; height: 100%;
+    border: none; padding: 0 12px; outline: none; font-size: 14px; width: 160px; background-color: transparent; color: var(--text-main); font-family: inherit; font-weight: 500; 
+}
+.header-search button { 
+    -webkit-appearance: none; -moz-appearance: none; appearance: none;
+    box-sizing: border-box; margin: 0; vertical-align: middle; height: 100%;
+    background-color: #333; color: #fff; border: none; padding: 0 15px; cursor: pointer; font-weight: bold; font-size: 14px; font-family: inherit; transition: background-color 0.2s; 
+}
 .header-search button:hover { background-color: #555; }
 
 /* ====================================================
    3. メインビジュアル＆スライドショー
    ==================================================== */
-.main-visual-full {
-    position: relative; width: 100%; height: calc(100vh - 75px); 
-    min-height: 500px; overflow: hidden; margin: 0; padding: 0;
-}
-
-.main-visual-full::before {
-    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 0.9) 100%);
-    pointer-events: none; z-index: 1; 
-}
-
+.main-visual-full { flex-shrink: 0; position: relative; width: 100%; height: calc(100vh - 75px); min-height: 500px; overflow: hidden; margin: 0; padding: 0; }
+.main-visual-full::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 0.9) 100%); pointer-events: none; z-index: 1; }
 .slideshow { width: 100%; height: 100%; margin: 0; padding: 0; position: relative; overflow: hidden; }
 .slide-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
-.slide {
-    flex: 0 0 100%; width: 100%; height: 100%;
-    background-size: cover; background-position: center; background-repeat: no-repeat;
-    opacity: 1; 
-}
+.slide { flex: 0 0 100%; width: 100%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 1; }
 
 .slide1 { background-image: url('2.jpeg'); background-color: var(--accent-blue); }
 .slide2 { background-image: url('3.jpeg'); background-color: var(--accent); }
 .slide3 { background-image: url('1.jpeg'); background-color: var(--accent-yellow); }
 
-.main-visual-content-overlay {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    z-index: 2; background-color: rgba(253, 250, 246, 0.9); border: var(--border-thick); border-radius: 16px; padding: 40px 50px; text-align: center; box-shadow: 8px 8px 0px var(--accent); width: 85%; max-width: 700px; line-height: 1.5;
-}
+.main-visual-content-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; background-color: rgba(253, 250, 246, 0.9); border: var(--border-thick); border-radius: 16px; padding: 40px 50px; text-align: center; box-shadow: 8px 8px 0px var(--accent); width: 85%; max-width: 700px; line-height: 1.5; }
 .catchphrase { font-size: 38px; color: var(--text-main); margin: 0 0 20px 0; font-weight: 800; }
 .sub-catchphrase { font-size: 16px; font-weight: 800; margin: 0; background-color: var(--text-main); color: #ffffff; display: inline-block; padding: 8px 16px; border-radius: 8px; }
 
-.slider-btn {
-    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
-    background-color: var(--card-bg); border: var(--border-thick); color: var(--text-main); width: 50px; height: 50px; border-radius: 50%; font-size: 20px; font-weight: 800; cursor: pointer; box-shadow: 4px 4px 0px var(--accent); transition: all 0.2s ease; display: flex; align-items: center; justify-content: center;
-}
+.slider-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; background-color: var(--card-bg); border: var(--border-thick); color: var(--text-main); width: 50px; height: 50px; border-radius: 50%; font-size: 20px; font-weight: 800; cursor: pointer; box-shadow: 4px 4px 0px var(--accent); transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
 .slider-btn:hover { transform: translateY(-50%) translate(2px, 2px); box-shadow: 2px 2px 0px var(--accent); background-color: var(--accent-blue); color: #ffffff; }
 .prev-btn { left: 20px; } .next-btn { right: 20px; }
 
@@ -134,7 +149,6 @@ body {
 .about-text { font-size: 17px; line-height: 2; font-weight: 500; margin: 0 0 25px 0; }
 .about-btn { display: inline-block; font-size: 16px; font-weight: 800; color: #ffffff; background-color: var(--accent); padding: 12px 28px; border-radius: 30px; text-decoration: none; border: 3px solid var(--text-main); box-shadow: 4px 4px 0px var(--text-main); transition: all 0.2s ease; }
 .about-btn:hover { transform: translate(3px, 3px); box-shadow: 1px 1px 0px var(--text-main); background-color: var(--accent-blue); }
-
 .about-image-wrapper { width: 100%; display: flex; justify-content: center; align-items: center; padding: 10px; margin-top: 0; }
 .about-image { width: 100%; height: auto; max-height: 550px; object-fit: contain; background-color: transparent; border: var(--border-thick); border-radius: 16px; box-shadow: 8px 8px 0px var(--accent-yellow); transform: rotate(2deg); transition: transform 0.3s ease; }
 .about-image:hover { transform: rotate(0deg) scale(1.02); }
@@ -181,7 +195,6 @@ body {
 .news-more-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--accent-red); }
 .news-board-footer { text-align: right; margin-top: 30px; }
 
-/* 記事詳細など省略せず全て */
 .activity-wrapper { width: 100%; max-width: 800px; margin: 0 auto 60px; display: flex; flex-direction: column; gap: 40px; padding: 0 20px; box-sizing: border-box; }
 .activity-card { display: flex; flex-direction: column; background-color: var(--card-bg); border: var(--border-thick); border-radius: 20px; overflow: hidden; box-shadow: 8px 8px 0px var(--accent-blue); margin-bottom: 40px; height: auto; min-height: min-content; }
 .activity-card:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0px var(--accent-blue); }
@@ -280,12 +293,13 @@ body {
 .back-home-btn:hover { transform: translate(3px, 3px); box-shadow: 2px 2px 0px var(--accent-yellow); background-color: var(--bg-color); }
 .back-home-btn span { margin-right: 8px; }
 
-
-
 /* ====================================================
    8. フッター（Footer）
    ==================================================== */
-.site-footer { width: 100vw; margin-left: calc(50% - 50vw); background-color: #ffffff; border-top: var(--border-thick); padding: 50px 0 20px 0; margin-top: 50px; }
+.site-footer { 
+    width: 100vw; margin-left: calc(50% - 50vw); background-color: #ffffff; border-top: var(--border-thick); padding: 50px 0 20px 0; margin-top: 50px; 
+    flex-shrink: 0; margin-top: auto !important; margin-bottom: 0 !important; /* 🌟 フッター隙間防止用 */
+}
 .footer-inner { width: 100%; max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; padding: 0 20px 30px; border-bottom: 2px dashed var(--line-color); box-sizing: border-box; }
 .footer-logo { font-size: 20px; font-weight: 900; margin-bottom: 10px; }
 .footer-address { font-size: 14px; line-height: 1.6; margin-bottom: 15px; font-weight: bold;}
@@ -310,8 +324,9 @@ body {
     .logo-img { height: 30px; }
     .header-nav ul { gap: 5px; }
     .header-nav a { font-size: 13px; padding: 5px 8px; white-space: nowrap; } 
-    .header-search input { width: 110px; font-size: 12px; padding: 5px; }
-    .header-search button { font-size: 12px; padding: 5px 8px; white-space: nowrap; }
+    /* 🌟 PC縮小時も検索バーの横ズレを防ぐため padding の左右を調整 */
+    .header-search input { width: 110px; font-size: 12px; padding: 0 5px; }
+    .header-search button { font-size: 12px; padding: 0 8px; white-space: nowrap; }
 }
 
 @media (max-width: 1250px) {
@@ -373,7 +388,6 @@ body {
     /* =========================================
        3. 各セクション共通（スマホ限定・幅85%のスリムなカード化）
        ========================================= */
-    /* 🌟 大枠のカード：幅85%のスリムなふんわりカードに統一 */
     .about-section, .next-event-section, .top-news-section, .voices-section, .cta-box, 
     .about-container, .contact-container, .schedule-container, .activity-container,
     .article-container, .single-article-container, .detail-container, .activity-detail-container, .post-container,
@@ -389,16 +403,13 @@ body {
         box-sizing: border-box;
     }
 
-    /* セクションタイトル */
     .section-title, .page-title { font-size: 26px; text-align: center; margin-bottom: 5px; text-shadow: none; color: var(--text-main); }
     .section-subtitle, .page-subtitle { font-size: 13px; text-align: center; margin-bottom: 35px; color: #888; background: none; } 
     .page-header { margin-bottom: 25px; padding: 0 15px; }
     .detail-heading { font-size: 20px; border-bottom: 3px solid var(--accent-red); border-radius: 0; margin-bottom: 20px; display: inline-block; padding-bottom: 5px; }
 
-    /* 中身の箱の「二重カード化」を防ぐ */
     .news-board, .next-event-card { background-color: transparent !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
 
-    /* お知らせ（News）のリスト調整 */
     .news-item { border-bottom: 1px dashed #eee !important; padding: 20px 0 !important; }
     .news-item:last-child { border-bottom: none !important; padding-bottom: 0 !important; }
     .news-link { flex-direction: column; align-items: flex-start; padding: 0; gap: 12px; }
@@ -406,24 +417,20 @@ body {
     .cat-default, .cat-event, .cat-report, .cat-important { border: none !important; box-shadow: none !important; background-color: #f0f0f0; }
     .cat-important { background-color: #ffe8e8; color: var(--accent-red); }
 
-    /* メンバーの声 */
     .voices-grid { flex-direction: column; gap: 0; }
     .voice-card { background: transparent !important; box-shadow: none !important; border: none !important; border-bottom: 1px dashed #eee !important; padding: 25px 0 !important; margin-bottom: 0 !important; }
     .voice-card:last-child { border-bottom: none !important; padding-bottom: 0 !important; }
     .voice-author { border-top: none; padding-top: 15px; }
 
-    /* About Us */
     .about-layout { flex-direction: column-reverse; gap: 25px; width: 100%; } 
     .about-image { border-radius: 12px; max-height: 220px; width: 100%; object-fit: cover; box-shadow: none; border: 1px solid #eee; transform: none; }
     .about-text, .detail-text { font-size: 15px; text-align: left; line-height: 1.8; }
     .about-btn-wrap { text-align: center; margin-top: 20px; }
 
-    /* ボタン共通 */
     .about-btn, .cta-button, .news-more-btn { width: 100%; box-sizing: border-box; text-align: center; display: block; margin: 0 auto; border: none !important; border-radius: 50px !important; padding: 15px 20px !important; }
     .about-btn, .cta-button { background-color: var(--accent-red) !important; color: white !important; box-shadow: 0 8px 20px rgba(231, 111, 81, 0.3) !important; }
     .news-more-btn { box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; background-color: #fdfaf6 !important; border: 1px solid #eee !important; margin-top: 25px; }
 
-    /* Next Event / CTA */
     .event-badge { position: static !important; display: inline-block; margin-bottom: 15px; transform: none !important; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
     .event-details { border: none; background-color: #f8f9fa; border-radius: 12px; padding: 20px; margin-top: 20px; } 
     .cta-box { background-color: var(--accent-red) !important; color: white; padding: 50px 25px !important; box-shadow: 0 10px 30px rgba(231,111,81,0.4) !important; }
@@ -434,13 +441,11 @@ body {
     /* =========================================
        4. 下層ページ（About Us等）のコンポーネント調整
        ========================================= */
-    /* プロジェクトカード */
     .project-cards { flex-direction: column !important; gap: 20px !important; margin-top: 20px !important; }
     .project-card { border: none !important; box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; border-radius: 16px !important; padding: 25px 20px !important; background-color: #fdfaf6 !important; }
     .project-card h4 { font-size: 16px; margin-bottom: 8px; }
     .project-card p { font-size: 13px; line-height: 1.6; }
 
-    /* 概要テーブル */
     .overview-table-section { margin-top: 40px !important; margin-bottom: 0 !important; }
     .overview-table { border: none !important; box-shadow: none !important; border-radius: 0 !important; background: transparent !important; }
     .overview-table, .overview-table tbody, .overview-table tr, .overview-table th, .overview-table td { display: block; width: 100%; box-sizing: border-box; }
@@ -448,7 +453,6 @@ body {
     .overview-table td { padding: 10px 5px 25px !important; border: none !important; border-bottom: 1px dashed #ddd !important; font-size: 14px !important; }
     .overview-table tr:last-child td { border-bottom: none !important; }
 
-    /* マップ・カレンダー等 */
     .map-wrapper { border: none !important; box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important; border-radius: 16px !important; margin-top: 30px !important; }
     .map-wrapper iframe { height: 250px !important; border-radius: 16px !important; }
     .pdf-container { height: 500px; border: none !important; box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important; border-radius: 16px !important; }
@@ -459,7 +463,6 @@ body {
     .calendar-legend li { font-size: 13px; display: flex; align-items: center; gap: 6px; background-color: #f4f6f8; padding: 6px 14px; border-radius: 20px; color: var(--text-main); font-weight: 800; }
     .legend-color {display: inline-block; width: 12px; height: 12px; border-radius: 50%; }
 
-    /* トップへ戻るボタン */
     .back-home-container, .back-btn-container { border-top: none !important; padding-top: 10px !important; margin: 20px 0 50px !important; text-align: center; }
     .back-home-btn, .back-btn { border: none !important; box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important; border-radius: 50px !important; background-color: #ffffff !important; color: var(--text-main) !important; padding: 15px 30px !important; font-size: 15px !important; font-weight: 900; width: 100%; max-width: 300px; display: inline-block; box-sizing: border-box; }
 
@@ -471,10 +474,7 @@ body {
     .article-date { font-size: 14px; font-weight: 800; }
     .article-tag { font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 20px; border: none !important; background-color: var(--accent-green) !important; color: #ffffff !important; }
     
-    /* 🌟 写真を囲む親の箱の枠線を完全に消す（ズレ防止） */
     .article-main-img { border: none !important; box-shadow: none !important; background: transparent !important; padding: 0 !important; overflow: hidden !important; border-radius: 12px !important; }
-
-    /* 🌟 写真自体に細い枠線と角丸を設定 */
     .article-container img, .single-article-container img, .detail-container img, .activity-detail-container img, .post-container img, .article-main-img img { border: 2px solid var(--text-main) !important; border-radius: 12px !important; box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; width: 100% !important; height: auto !important; margin-bottom: 20px !important; box-sizing: border-box !important; }
     
     .article-body p { font-size: 15px; line-height: 1.8; margin-bottom: 20px !important; }
@@ -492,41 +492,27 @@ body {
     .footer-logo-img { height: 40px; }
     .instagram-link { padding: 10px 20px; font-size: 14px; border: none !important; box-shadow: 0 4px 15px rgba(225, 48, 108, 0.2) !important; }
     .footer-bottom { padding-top: 10px; font-size: 11px; }
- 
 }
 
 /* =========================================
    10. ギャラリー＆Lightbox（全画面共通設定）
    ========================================= */
-
-/* --- 🌟 矢印付きギャラリーのレイアウト --- */
 .gallery-wrapper { position: relative; display: flex; align-items: center; }
-
-/* --- ギャラリーの大枠（共通スワイプ設定） --- */
 .country-gallery { display: grid; grid-template-rows: repeat(2, 1fr); grid-auto-flow: column; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 15px; -ms-overflow-style: none; scrollbar-width: none; grid-auto-columns: 42%; width: 100%; }
 .country-gallery::-webkit-scrollbar { display: none; }
-
-/* --- 写真サムネイルのスタイル --- */
 .country-gallery img { width: 100% !important; aspect-ratio: 1 / 1 !important; height: auto !important; object-fit: cover !important; border-radius: 8px !important; border: 1px solid #eee; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; margin: 0 !important; scroll-snap-align: start; }
-
-/* 🌟 追加：スマホでは矢印を「絶対に」隠す！ */
 .gallery-arrow { display: none !important; }
 
-/* --- PCでの表示（8枚スライド＆矢印） --- */
 @media (min-width: 769px) {
     .country-gallery { gap: 15px; grid-auto-columns: calc((100% - 45px) / 4); max-width: 100%; margin: 0; padding: 0 40px; }
     .country-gallery img:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 1; }
-    
-    /* 🌟 PCでは矢印を「絶対に」表示する！ */
     .gallery-arrow { display: flex !important; align-items: center; justify-content: center; position: absolute; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; background-color: var(--text-main); color: white; border: none; border-radius: 50%; font-size: 16px; cursor: pointer; z-index: 10; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); transition: background-color 0.2s, transform 0.2s; }
     .gallery-arrow:hover { background-color: var(--accent-red); transform: translateY(-50%) scale(1.1); }
     .gallery-arrow:active { transform: translateY(-50%) scale(0.95); }
-    
     .prev-arrow { left: 0; }
     .next-arrow { right: 0; }
 }
 
-/* --- Lightbox（拡大画面）のスタイル --- */
 .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: opacity 0.3s ease; }
 .lightbox-overlay.active { display: flex; opacity: 1; }
 .lightbox-img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 30px rgba(255,255,255,0.2); transform: scale(0.9); transition: transform 0.3s ease; }
@@ -537,9 +523,55 @@ body {
    12. 画面サイズに合わせて「同じ比率」をキープする魔法のクラス
    ========================================= */
 .ratio-16-9 { width: 100% !important; height: auto !important; aspect-ratio: 16 / 9 !important; object-fit: cover !important; }
-
 .ratio-4-3 { width: 100% !important; height: auto !important; aspect-ratio: 4 / 3 !important; object-fit: cover !important; }
-
 .ratio-1-1 { width: 100% !important; height: auto !important; aspect-ratio: 1 / 1 !important; object-fit: cover !important; }
-
 .ratio-3-4 { width: 100% !important; height: auto !important; aspect-ratio: 3 / 4 !important; object-fit: cover !important; }
+
+/* =========================================
+   13. スケジュール：活動種別ごとの色分け＆凡例
+   ========================================= */
+/* 📅 定例会 (青) */
+.type-regular { border-left: 10px solid var(--accent-blue) !important; }
+.type-regular .month-badge { color: var(--accent-blue); border-color: var(--accent-blue); }
+
+/* 🧹 地域奉仕 (緑) */
+.type-local-service { border-left: 10px solid var(--accent-green) !important; }
+.type-local-service .month-badge { color: var(--accent-green); border-color: var(--accent-green); }
+
+/* 🌏 国際奉仕 (オレンジ/赤) */
+.type-international { border-left: 10px solid var(--accent-red) !important; }
+.type-international .month-badge { color: var(--accent-red); border-color: var(--accent-red); }
+
+/* ✨ その他・イベント (黄) */
+.type-event { border-left: 10px solid var(--accent-yellow) !important; }
+.type-event .month-badge { color: var(--accent-yellow); border-color: var(--accent-yellow); }
+
+/* --- カレンダーの色分け凡例（レジェンド）PC・共通 --- */
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0 30px 0;
+    padding: 0;
+    list-style: none;
+}
+.calendar-legend li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 800;
+    background-color: #ffffff;
+    padding: 8px 20px;
+    border-radius: 30px;
+    border: 2px solid var(--text-main);
+    box-shadow: 3px 3px 0px var(--line-color);
+}
+.legend-color {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.1);
+}
