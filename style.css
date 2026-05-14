@@ -533,3 +533,30 @@ body {
 .calendar-legend { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin: 20px 0 30px 0; padding: 0; list-style: none; }
 .calendar-legend li { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 800; background-color: #ffffff; padding: 8px 20px; border-radius: 30px; border: 2px solid var(--text-main); box-shadow: 3px 3px 0px var(--line-color); }
 .legend-color { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); }
+
+/* =========================================
+   14. メンバー紹介（縦並び・リスト形式バージョン）
+   ========================================= */
+.officers-section { margin-top: 60px; margin-bottom: 20px; }
+.officers-vertical { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; }
+.officer-card-v { display: flex; align-items: center; gap: 30px; background-color: var(--card-bg); border: var(--border-thick); border-radius: 20px; padding: 30px 40px; box-shadow: 8px 8px 0px var(--accent-red); transition: transform 0.2s ease; }
+
+.officer-card-v:nth-child(2) { box-shadow: 8px 8px 0px var(--accent-blue); }
+.officer-card-v:nth-child(3) { box-shadow: 8px 8px 0px var(--accent-green); }
+
+.officer-card-v:hover { transform: translateX(5px); }
+
+.officer-img-v { width: 120px; height: 120px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--text-main); overflow: hidden; background-color: #fdfaf6; display: flex; align-items: center; justify-content: center; font-size: 50px; }
+.officer-img-v img { width: 100%; height: 100%; object-fit: cover; }
+
+.officer-info-v { flex-grow: 1; text-align: left; }
+.officer-info-v .officer-role { display: inline-block; font-size: 13px; font-weight: 900; color: #ffffff; padding: 5px 14px; border-radius: 20px; margin-bottom: 12px; border: 2px solid var(--text-main); }
+.officer-info-v .officer-name { font-size: 22px; font-weight: 900; margin: 0 0 12px 0; }
+.officer-info-v .officer-desc { font-size: 15px; line-height: 1.8; font-weight: 500; margin: 0; }
+
+
+@media (max-width: 768px) {
+    .officer-card-v { flex-direction: column; text-align: center; padding: 30px 20px !important; box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; border: none !important; background-color: #fdfaf6 !important; gap: 15px; }
+    .officer-info-v { text-align: center; }
+    .officer-card-v:hover { transform: translateY(-5px); }
+}
