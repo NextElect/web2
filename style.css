@@ -3,26 +3,9 @@
 /* ====================================================
    0. はみ出し・見切れ防止の最強リセット（全要素共通）
    ==================================================== */
-*, *::before, *::after {
-    box-sizing: border-box; 
-    overflow-wrap: break-word; 
-    word-wrap: break-word;
-}
-
-img, iframe, video {
-    max-width: 100%; 
-    height: auto;
-}
-
-html {
-    height: 100%;
-}
-
-body {
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; overflow-wrap: break-word; word-wrap: break-word; }
+img, iframe, video { max-width: 100%; height: auto; }
+html {background-color: #fdfaf6; }
 
 /* ====================================================
    1. 全体設定・カラーパレット（Variables & Base）
@@ -46,32 +29,22 @@ body {
     color: var(--text-main);
     display: flex;
     flex-direction: column;
+    
     min-height: 100vh;
+    min-height: 100dvh; 
+    
+    margin: 0;
+    padding: 0;
 
     line-height: 1.75;
     letter-spacing: 0.05em;
     word-break: auto-phrase;
 
-    /* MacとWindowsの文字の太さ・余白の差をなくす魔法 */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-.page-body {
-    flex: 1 0 auto; /* フッターを下に押しやるバネ */
-    padding: 130px 20px 80px; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    width: 100%; 
-    box-sizing: border-box;
-}
-
-.home-body { padding-top: 75px !important; }
-.home-body .page-body { padding-top: 40px !important; }
-
-.section-title { font-size: 32px; font-weight: 900; margin: 0; text-align: center; }
-.section-subtitle { font-size: 14px; color: #666; font-weight: bold; margin: 5px 0 0 0; text-align: center; }
+.page-body { flex-grow: 1; padding: 130px 20px 80px; display: flex; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box; }
 
 /* ====================================================
    2. ヘッダー＆ナビゲーション
