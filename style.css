@@ -304,24 +304,24 @@ body {
 /* ====================================================
    9. 📱 スマホ・タブレット対応 (Media Queries - Responsive)
    ==================================================== */
-@media (max-width: 1400px) {
+@media (max-width: 1650px) {
     .site-header { padding: 10px 15px; }
     .header-logo { font-size: 16px; gap: 6px; }
-    .logo-img { height: 30px; } 
-    .header-nav ul { gap: 2px; }
-    .header-nav a { font-size: 13px; padding: 5px 8px; }
+    .logo-img { height: 30px; }
+    .header-nav ul { gap: 5px; }
+    .header-nav a { font-size: 13px; padding: 5px 8px; white-space: nowrap; } 
     .header-search input { width: 110px; font-size: 12px; padding: 5px; }
-    .header-search button { font-size: 12px; padding: 5px 8px; }
+    .header-search button { font-size: 12px; padding: 5px 8px; white-space: nowrap; }
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1250px) {
     .site-header { flex-wrap: wrap; justify-content: space-between; padding: 12px 20px; }
     .header-logo { order: 1; }
     .header-right { order: 2; }
     .header-nav { order: 3; width: 100%; display: flex; justify-content: center; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; }
-    .header-nav ul { gap: 10px; }
-    .header-nav a { font-size: 13px; }
-    .page-body { padding-top: 140px; }
+    .header-nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; } 
+    .header-nav a { font-size: 13px; white-space: nowrap; }
+    .page-body { padding-top: 150px; }
 }
 
 @media (max-width: 768px) {
