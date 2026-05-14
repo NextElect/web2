@@ -5,9 +5,9 @@
    ==================================================== */
 *, *::before, *::after { box-sizing: border-box; overflow-wrap: break-word; word-wrap: break-word; }
 
-img, iframe, video { max-width: 100%; height: auto;}
+img, iframe, video { max-width: 100%; height: auto; }
 
-html { background-color: #ffffff !important; }
+html { height: -webkit-fill-available; background-color: var(--bg-color); }
 
 /* ====================================================
    1. 全体設定・カラーパレット（Variables & Base）
@@ -27,16 +27,17 @@ html { background-color: #ffffff !important; }
 
 body {
     font-family: 'M PLUS Rounded 1c', 'ヒラギノ丸ゴ ProN', 'Hiragino Maru Gothic ProN', 'メイリオ', Meiryo, sans-serif;
-    background-color: var(--bg-color);
     color: var(--text-main);
     display: flex;
     flex-direction: column;
 
     min-height: 100vh;
-    min-height: 100dvh; 
+    min-height: -webkit-fill-available; 
     
     margin: 0;
     padding: 0;
+
+    overscroll-behavior-y: none;
 
     line-height: 1.75;
     letter-spacing: 0.05em;
@@ -46,7 +47,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.page-body { background-color: var(--bg-color) !important; flex: 1 0 auto !important; padding: 130px 20px 80px; display: flex; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box; }
+.page-body {background-color: var(--bg-color); flex: 1 0 auto !important; padding: 130px 20px 80px; display: flex; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box; }
 
 .home-body { padding-top: 75px !important; }
 .home-body .page-body { padding-top: 40px !important; }
